@@ -32,12 +32,17 @@ Aplikasi pencatatan keuangan pribadi berbasis web (Next.js App Router) dengan de
 - [x] Implementasi Soft Delete / Arsip untuk Wallet (mencegah orphaned transactions)
 - [x] Fix tampilan form transaksi untuk wallet yang terhapus (orphan fallback)
 
-### Phase 2 — PDF E-Statement
-- [ ] Upload & Parse PDF (BCA & Bank Jago)
-- [ ] Auto-detect bank dari konten PDF
-- [ ] Deduplikasi transaksi
-- [ ] UI review bulk: checkbox per transaksi sebelum import
-- [ ] Import log
+### ✅ Phase 2 — PDF E-Statement (SELESAI)
+- [x] Upload & Parse PDF (BCA & Bank Jago) via `pdf-parse` (v1.1.1)
+- [x] Auto-detect bank dari konten PDF
+- [x] Parser BCA: format mutasi rekening koran (TANGGAL | KETERANGAN | MUTASI DB/CR | SALDO)
+- [x] Parser Jago: format pocket history (+ / - prefix + cumulative balance)
+- [x] Auto-kategorisasi heuristik: BIAYA ADM → Biaya Admin, BUNGA → Pendapatan Bunga
+- [x] Deduplikasi transaksi (date + amount + type match vs existing DB)
+- [x] UI review bulk: checkbox + edit nama + edit kategori per transaksi sebelum import
+- [x] Saldo wallet terupdate otomatis setelah import
+- [x] Fix: bypass pdf-parse index.js debug mode (import langsung dari `lib/pdf-parse.js`)
+- [x] Tombol "Import PDF" di halaman Transaksi
 
 ### Phase 3 — AI Multi-Entry Input
 - [ ] Integrasi Google Gemini API
@@ -55,6 +60,7 @@ Aplikasi pencatatan keuangan pribadi berbasis web (Next.js App Router) dengan de
 - [x] Breakdown persentase kategori (Recharts DonutChart)
 - [x] Filter waktu fleksibel (Mingguan, Bulanan, Tahunan)
 - [x] Fitur Custom Start Date untuk siklus bulanan (misal gajian tgl 25)
+- [x] UX: tombol navigasi dan tab di-disable saat loading, fade overlay konten, spinner indicator
 
 ### Phase 6 — OCR Struk
 - [ ] Upload foto struk ke Gemini Vision API

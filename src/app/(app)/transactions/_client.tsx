@@ -10,7 +10,7 @@ import {
   DialogTitle, DialogFooter, DialogDescription,
 } from "@/components/ui/dialog";
 import { formatCurrency, cn } from "@/lib/utils";
-import { Plus, Trash2, Pencil, ArrowLeftRight, TrendingUp, TrendingDown } from "lucide-react";
+import { Plus, Trash2, Pencil, ArrowLeftRight, TrendingUp, TrendingDown, FileText } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 type TxRow = {
@@ -68,21 +68,32 @@ export function TransactionsClient({ initialTransactions, wallets, categories }:
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold">Transaksi</h1>
-        <Button 
-          size="sm" 
-          onClick={() => {
-            if (activeWallets.length === 0) {
-              alert("Silakan tambah wallet aktif terlebih dahulu.");
-              router.push("/wallets");
-              return;
-            }
-            setAddDialogOpen(true);
-          }} 
-          className="gap-1.5"
-        >
-          <Plus className="h-4 w-4" />
-          Tambah
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button 
+            size="sm" 
+            variant="outline"
+            onClick={() => router.push("/transactions/pdf")}
+            className="gap-1.5"
+          >
+            <FileText className="h-4 w-4" />
+            Import PDF
+          </Button>
+          <Button 
+            size="sm" 
+            onClick={() => {
+              if (activeWallets.length === 0) {
+                alert("Silakan tambah wallet aktif terlebih dahulu.");
+                router.push("/wallets");
+                return;
+              }
+              setAddDialogOpen(true);
+            }} 
+            className="gap-1.5"
+          >
+            <Plus className="h-4 w-4" />
+            Tambah
+          </Button>
+        </div>
       </div>
 
       {/* Empty state */}

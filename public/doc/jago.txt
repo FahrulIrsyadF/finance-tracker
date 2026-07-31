@@ -1,0 +1,208 @@
+
+
+PT	Bank	Jago	Tbk	berizin	dan	diawasi	oleh	Otoritas	Jasa	Keuangan	(OJK)	dan	Bank	Indonesia,	serta
+merupakan	peserta	penjaminan	Lembaga	Penjamin	Simpanan	(LPS).
+www.jago.com
+Pockets	Transactions	HistoryHalaman	1	dari	2
+FAHRUL	IRSYAD	FIANTO
+Kantong	Utama	107183286542
+Menampilkan	transaksi	IDR	dariSaldo	terbaru	31	Jul	2026
+01	Jul	2026	-	31	Jul	2026IDR	14.842,53
+Tanggal	&	WaktuSumber/TujuanRincian	TransaksiCatatanJumlahSaldo
+Juli	2026
+02	Jul	2026
+06.54
+Pencairan	Dana	dari
+GoPay
+DOMPET	ANAK	BANGSA
+Pencairan	Dana	dari	GoPay
+ID#	260702-BAUR-AVW8KM
+GoPay	Bank	Transfer
+ID261828605822614O
++3.000.0003.012.197,36
+02	Jul	2026
+06.55
+Bibit
+PI10325357L5OMU
+Pembayaran	dengan	Jago	Pay
+ID#	PI10325357L5OMU
+Pembelian	Reksa	Dana-2.000.0001.012.197,36
+03	Jul	2026
+23.13
+SABRINA	NABILA
+KHOLIQIN
+Jago	108019116086
+Transfer	Masuk
+ID#	260703-VYXQ-FU9VXG
+ty+100.0011.112.198,36
+05	Jul	2026
+08.42
+FAHRUL	IRSYAD
+FIANTO
+GoPay	082143138419
+Transfer	Keluar
+ID#	KAE039xXTxmZxfbxoB
+-50.0001.062.198,36
+06	Jul	2026
+16.45
+FAHRUL	IRSYAD
+FIANTO
+GoPay	082143138419
+Transfer	Keluar
+ID#	F9zSKHii0vqQCqrrCk
+-50.0001.012.198,36
+08	Jul	2026
+19.38
+SABRINA	NABILA
+KHOLIQIN
+Jago	108019116086
+Transfer	Keluar
+ID#	260708-R2CN-KHLTTF
+-7.0001.005.198,36
+09	Jul	2026
+22.04
+Pencairan	Reksa	Dana
+Bibit	Tumbuh	Bersama
+Pencairan	Reksa	Dana
+ID#	6a4fb87824c7dc5c42970ee3
++400.0001.405.198,36
+09	Jul	2026
+22.18
+Shopee	Indonesia
+ShopeePay
+9360091800215732126
+Pembayaran	QRIS
+ID#	260709-X6AZ-BMCWNG
+-422.412982.786,36
+10	Jul	2026
+19.38
+ALFAGIFT
+BCA	9360001430043420345
+Pembayaran	QRIS
+ID#	260710-WM7F-9EGTGV
+-34.300948.486,36
+11	Jul	2026
+06.39
+MASRUROH	BINTI	H.ZAI
+BRI	651801015403505
+Transfer	Keluar
+ID#	260711JAGBIDJA00023659
+-500.000448.486,36
+11	Jul	2026
+21.09
+FAHRUL	IRSYAD
+FIANTO
+GoPay	082143138419
+Transfer	Keluar
+ID#	AwpxRpGVxpYXCTxixC
+-25.000423.486,36
+12	Jul	2026
+22.13
+SABRINA	NABILA
+KHOLIQIN
+Jago	108019116086
+Transfer	Keluar
+ID#	260712-JT43-UC3TFR
+-150.000273.486,36
+18	Jul	2026
+16.15
+CHOLIFA	NUR
+MAULIDIA
+BRI	613101027055530
+Transfer	Keluar
+ID#	260718JAGBIDJA00039553
+-50.000223.486,36
+
+PT	Bank	Jago	Tbk	berizin	dan	diawasi	oleh	Otoritas	Jasa	Keuangan	(OJK)	dan	Bank	Indonesia,	serta
+merupakan	peserta	penjaminan	Lembaga	Penjamin	Simpanan	(LPS).
+www.jago.com
+Pockets	Transactions	HistoryHalaman	2	dari	2
+Tanggal	&	WaktuSumber/TujuanRincian	TransaksiCatatanJumlahSaldo
+19	Jul	2026
+19.01
+CHOLIFA	NUR
+MAULIDIA
+BRI	613101027055530
+Transfer	Keluar
+ID#	260719JAGBIDJA00183232
+-26.000197.486,36
+22	Jul	2026
+09.22
+KOPKAR	RIZANI
+HUSADA
+BSI	9360045100002178675
+Pembayaran	QRIS
+ID#	260722-NTJ7-C7QRQJ
+-18.000179.486,36
+22	Jul	2026
+14.15
+KOPKAR	RIZANI
+HUSADA
+BSI	9360045100002178675
+Pembayaran	QRIS
+ID#	260722-UHGJ-82DA92
+-8.000171.486,36
+24	Jul	2026
+12.18
+PT	Tokopedia
+Doku
+9360089900000594006
+Pembayaran	QRIS
+ID#	260724-22X9-8B2BER
+-64.060107.426,36
+24	Jul	2026
+13.59
+KOPKAR	RIZANI
+HUSADA
+BSI	9360045100002178675
+Pembayaran	QRIS
+ID#	260724-B3ZN-ZU33PP
+-14.00093.426,36
+24	Jul	2026
+16.54
+TAHU	KOCEK	DAN
+JIGOR	99
+BNI	9360000915043345733
+Pembayaran	QRIS
+ID#	260724-ZAFP-TZHFJG
+-10.00083.426,36
+25	Jul	2026
+13.52
+Today	Chicken
+BCA	9360001430045135669
+Pembayaran	QRIS
+ID#	260725-4YAY-UMG3JX
+-13.00070.426,36
+25	Jul	2026
+14.02
+SABRINA	NABILA
+KHOLIQIN
+Jago	108019116086
+Transfer	Masuk
+ID#	260725-JLGH-EAM6T3
++44.000114.426,36
+25	Jul	2026
+18.37
+FAHRUL	IRSYAD
+FIANTO
+GoPay	082143138419
+Transfer	Keluar
+ID#	YlX0aNItvRCHxEYVwI
+-100.00014.426,36
+28	Jul	2026
+04.36
+Bunga
+MAIN_ACCOUNT
+Bunga
+ID#	260728-RVXN-HXFPGY
++520,2114.946,57
+28	Jul	2026
+04.36
+Pajak	Bunga
+MAIN_ACCOUNT
+Pajak	Bunga
+ID#	260728-WY7Z-9XVBCQ
+-104,0414.842,53
+Info	Penting
+Dokumen	ini	adalah	daftar	Riwayat	Transaksi	Jago	kamu	dan	dihasilkan	sesuai	dengan	transaksi	yang	dilakukan	pada	periode	yang	dinyatakan	dalam	laporan,	transaksi	dapat
+ditampilkan	berdasarkan	hasil	pencarian	dan	filter	yang	diterapkan	oleh	Nasabah.
