@@ -7,6 +7,6 @@ export interface ParsedTransaction {
 }
 
 export interface ParseResult {
-  bank: "BCA" | "Jago" | "Unknown";
+  bank: "BCA" | "Jago" | "BRI" | "Unknown";
   transactions: ParsedTransaction[];
 }

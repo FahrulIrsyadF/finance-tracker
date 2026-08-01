@@ -182,7 +182,9 @@ export function CategoriesClient({ initialCategories }: { initialCategories: Cat
                 onValueChange={(v) => setForm((f) => ({ ...f, type: v as CategoryType }))}
               >
                 <SelectTrigger id="cat-type">
-                  <SelectValue />
+                  <SelectValue>
+                    {form.type === "expense" ? "Pengeluaran" : "Pemasukan"}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="expense">Pengeluaran</SelectItem>

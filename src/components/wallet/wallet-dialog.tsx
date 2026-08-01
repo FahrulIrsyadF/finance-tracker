@@ -86,7 +86,9 @@ export function WalletDialog({ open, onClose, initial }: WalletDialogProps) {
               onValueChange={(v) => setForm((f) => ({ ...f, type: v as WalletType }))}
             >
               <SelectTrigger id="wallet-type">
-                <SelectValue />
+                <SelectValue>
+                  {WALLET_TYPES.find((t) => t.value === form.type)?.label}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {WALLET_TYPES.map((t) => (

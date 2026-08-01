@@ -33,21 +33,24 @@ Aplikasi pencatatan keuangan pribadi berbasis web (Next.js App Router) dengan de
 - [x] Fix tampilan form transaksi untuk wallet yang terhapus (orphan fallback)
 
 ### ✅ Phase 2 — PDF E-Statement (SELESAI)
-- [x] Upload & Parse PDF (BCA & Bank Jago) via `pdf-parse` (v1.1.1)
+- [x] Upload & Parse PDF (BCA, Bank Jago, & Bank BRImo) via `pdf-parse` (v1.1.1)
 - [x] Auto-detect bank dari konten PDF
 - [x] Parser BCA: format mutasi rekening koran (TANGGAL | KETERANGAN | MUTASI DB/CR | SALDO)
 - [x] Parser Jago: format pocket history (+ / - prefix + cumulative balance)
-- [x] Auto-kategorisasi heuristik: BIAYA ADM → Biaya Admin, BUNGA → Pendapatan Bunga
+- [x] Parser BRI: format e-Statement BRImo (DD/MM/YY HH:MM:SS | Description | Debet | Kredit | Saldo)
+- [x] Auto-kategorisasi heuristik: BIAYA ADM / ADMIN / FEE → Biaya Admin, BUNGA → Pendapatan Bunga
 - [x] Deduplikasi transaksi (date + amount + type match vs existing DB)
 - [x] UI review bulk: checkbox + edit nama + edit kategori per transaksi sebelum import
 - [x] Saldo wallet terupdate otomatis setelah import
 - [x] Fix: bypass pdf-parse index.js debug mode (import langsung dari `lib/pdf-parse.js`)
 - [x] Tombol "Import PDF" di halaman Transaksi
 
-### Phase 3 — AI Multi-Entry Input
-- [ ] Integrasi Google Gemini API
-- [ ] Textarea → Parse → Preview cards → Confirm
-- [ ] Prompt engineering teks natural Bahasa Indonesia (rb, k, jt, tanggal relatif)
+### ✅ Phase 3 — AI Multi-Entry Input (SELESAI)
+- [x] Integrasi Google Gemini API (model 3.5 Flash Lite, 3.1 Flash Lite, 2.5 Flash Lite)
+- [x] Textarea → Parse → Preview cards → Confirm
+- [x] Prompt engineering teks natural Bahasa Indonesia (rb, k, jt, tanggal relatif)
+- [x] UI/UX Tracker kuota API (RPM & RPD) via localStorage
+- [x] Error handling yang ramah pengguna
 
 ### Phase 4 — Excel Import/Export
 - [ ] Export `.xlsx` dari filter transaksi

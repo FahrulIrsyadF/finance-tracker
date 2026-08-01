@@ -24,7 +24,7 @@ export async function previewPDFImport(formData: FormData, walletId: string) {
   const parseResult = await parsePDFBuffer(buffer);
   
   if (parseResult.bank === "Unknown") {
-    throw new Error("Format PDF tidak dikenali. Pastikan file adalah E-Statement BCA atau Bank Jago.");
+    throw new Error("Format PDF tidak dikenali. Pastikan file adalah E-Statement BCA, Bank Jago, atau Bank BRI.");
   }
   
   if (parseResult.transactions.length === 0) {

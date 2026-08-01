@@ -10,7 +10,7 @@ import {
   DialogTitle, DialogFooter, DialogDescription,
 } from "@/components/ui/dialog";
 import { formatCurrency, cn } from "@/lib/utils";
-import { Plus, Trash2, Pencil, ArrowLeftRight, TrendingUp, TrendingDown, FileText } from "lucide-react";
+import { Plus, Trash2, Pencil, ArrowLeftRight, TrendingUp, TrendingDown, FileText, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 type TxRow = {
@@ -72,11 +72,20 @@ export function TransactionsClient({ initialTransactions, wallets, categories }:
           <Button 
             size="sm" 
             variant="outline"
+            onClick={() => router.push("/transactions/ai")}
+            className="gap-1.5"
+          >
+            <Sparkles className="h-4 w-4" />
+            AI
+          </Button>
+          <Button 
+            size="sm" 
+            variant="outline"
             onClick={() => router.push("/transactions/pdf")}
             className="gap-1.5"
           >
             <FileText className="h-4 w-4" />
-            Import PDF
+            PDF
           </Button>
           <Button 
             size="sm" 

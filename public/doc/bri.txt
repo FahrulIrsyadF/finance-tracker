@@ -1,0 +1,73 @@
+
+
+No. Rekening
+Account No
+:613101018000530Unit Kerja
+Business Unit
+:
+UNIT SILIR AGUNG BANYUWANGI
+Nama Produk
+Product Name
+:SIMPEDES UMUM       Alamat Unit Kerja
+Business Unit Address
+:
+KANCA BANYUWANGI                        
+KANWIL MALANG                           
+Valuta
+Currency
+:IDR 
+Tanggal Transaksi
+Transaction Date
+Uraian Transaksi
+Transaction Description
+Teller
+User ID
+Debet
+Debit
+Kredit
+Credit
+Saldo
+Balance
+16/07/26 23:59:59Admin Fee          6,500.000.0025,744.99
+16/07/26 23:59:59Monthly Fee ATM          3,500.000.0022,244.99
+Kepada Yth. / To :
+Tanggal Laporan
+Statement Date
+:01/08/26
+FAHRUL IRSYAD FIANTO                                  
+                                              
+Periode Transaksi
+Transaction Period
+:01/07/26 - 31/07/26
+DUSUN KRAJAN RT 006RW /001,KEL SENEPOREJO 
+KEC SILIRAGUNG, KEL SENEP,BANYUWANGI 
+SILIRAGUNG BANYUWANGI
+Saldo Awal
+Opening Balance
+Total Transaksi Debet
+Total Debit Transaction
+Total Transaksi Kredit
+Total Credit Transaction
+Saldo Akhir
+Closing Balance
+32,244.9910,000.000.0022,244.99
+Terbilang / In Words
+DUA PULUH DUA RIBU DUA RATUS EMPAT PULUH EMPAT KOMA SEMBILAN PULUH SEMBILAN RUPIAH
+TWENTY TWO THOUSAND TWO HUNDRED FORTY FOUR POINT NINETY NINE RUPIAH
+Biaya materai telah dibayar Lunas
+Revenue Stamp Paid
+- Apabila terdapat perbedaan dengan catatan Saudara, harap menghubungi kami selambat-lambatnya 14 hari sejak diterimanya rekening koran ini.
+- In the case of any differences from your records, please contact us within not later than 14 days from the receipt of this Statement of Account
+- Salinan rekening koran ini merupakan hasil cetakan komputer, tidak diperlukan tanda tangan pejabat Bank
+- The copy of this Statement of Account is computer-generated, no official signature is required.
+- Apabila ada perubahan alamat email mohon diinformasikan pada Unit Kerja BANK BRI
+- Should there be any change of email address, please notify the relevant Bank BRI Business Unit
+Created By BRIMO
+08/01/2026 22:26:08
+FBJ5311_187237431858_e-
+StatementBRImo_613101018000530_Jul2026_20260801_222418 
+2026213222420160
+Halaman 1 dari 1
+Page 1 of 1
+LAPORAN TRANSAKSI FINANSIAL
+STATEMENT OF FINANCIAL TRANSACTION

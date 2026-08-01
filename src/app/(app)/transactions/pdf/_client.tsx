@@ -138,7 +138,9 @@ export function PDFImportClient({ wallets, categories }: { wallets: any[]; categ
                       />
                       <Select value={tx.categoryId || "uncategorized"} onValueChange={(v) => changeCategory(tx.id, v === "uncategorized" ? "" : v)}>
                         <SelectTrigger className="h-8 text-xs">
-                          <SelectValue placeholder="Pilih Kategori" />
+                          <SelectValue placeholder="Pilih Kategori">
+                            {categories.find(c => c.id === tx.categoryId)?.name || "-- Tanpa Kategori --"}
+                          </SelectValue>
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="uncategorized">-- Tanpa Kategori --</SelectItem>
@@ -196,7 +198,7 @@ export function PDFImportClient({ wallets, categories }: { wallets: any[]; categ
             <FileText className="h-5 w-5 text-primary" /> Upload PDF
           </CardTitle>
           <CardDescription>
-            Saat ini mendukung E-Statement dari Bank BCA dan Bank Jago.
+            Saat ini mendukung E-Statement dari Bank BCA, Bank Jago, dan Bank BRI (BRImo).
           </CardDescription>
         </CardHeader>
         <CardContent>
