@@ -1,3 +1,4 @@
+// Load env vars before DB init
 import { config } from "dotenv";
 config({ path: ".env.local" });
 
