@@ -178,7 +178,7 @@ export function TransactionForm({
         <Label>{typeTab === "transfer" ? "Dari Wallet" : "Wallet"}</Label>
         <Select
           value={form.walletId}
-          onValueChange={(v) => setForm((f) => ({ ...f, walletId: v }))}
+          onValueChange={(v) => setForm((f) => ({ ...f, walletId: v ?? f.walletId }))}
         >
           <SelectTrigger id="tx-wallet">
             <SelectValue placeholder="Pilih wallet...">
@@ -209,7 +209,7 @@ export function TransactionForm({
           <Label>Ke Wallet</Label>
           <Select
             value={form.transferToWalletId}
-            onValueChange={(v) => setForm((f) => ({ ...f, transferToWalletId: v }))}
+            onValueChange={(v) => setForm((f) => ({ ...f, transferToWalletId: v ?? f.transferToWalletId }))}
           >
             <SelectTrigger id="tx-wallet-to">
               <SelectValue placeholder="Pilih tujuan...">
@@ -241,7 +241,7 @@ export function TransactionForm({
           <Label>Kategori</Label>
           <Select
             value={form.categoryId}
-            onValueChange={(v) => setForm((f) => ({ ...f, categoryId: v }))}
+            onValueChange={(v) => setForm((f) => ({ ...f, categoryId: v ?? f.categoryId }))}
           >
             <SelectTrigger id="tx-category">
               <SelectValue placeholder="Pilih kategori...">

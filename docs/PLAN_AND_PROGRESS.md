@@ -69,10 +69,12 @@ Aplikasi pencatatan keuangan pribadi berbasis web (Next.js App Router) dengan de
 - [ ] Upload foto struk ke Gemini Vision API
 - [ ] Review & edit sebelum simpan
 
-### Phase 7 — Polish & Deploy
-- [ ] PWA (manifest + service worker, installable ke homescreen)
-- [ ] Final UX review & testing
-- [ ] Deploy ke Vercel + Turso production
+### 🔧 Phase 7 — Polish & Deploy (IN PROGRESS)
+- [x] Rebranding ke "Expend" (nama, logo, metadata, login page)
+- [x] DB Reset script (`npm run db:reset`) — wipe + re-seed kategori default
+- [x] Fix semua TypeScript type errors (pre-existing bugs di wallets, insights, transaction form, charts)
+- [x] Production build verified — 0 errors, 13 pages
+- [ ] Deploy ke Vercel + set environment variables
 
 ## Catatan Teknis
 - Gunakan `createdAt` vs `date`: `date` adalah tanggal user, `createdAt` adalah waktu record dibuat.

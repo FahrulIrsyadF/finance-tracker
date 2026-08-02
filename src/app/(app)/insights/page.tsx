@@ -3,7 +3,7 @@ import { InsightsClient } from "./_client";
 import { startOfWeek, endOfWeek, startOfMonth, endOfMonth, startOfYear, endOfYear, addMonths, setDate } from "date-fns";
 
 export const metadata = {
-  title: "Insight — FinanceTracker",
+  title: "Insight",
 };
 
 export default async function InsightsPage({
@@ -24,8 +24,8 @@ export default async function InsightsPage({
 
   if (rangeType === "weekly") {
     // 7 days, week starts on Monday
-    from = startOfWeek(baseDate, { weekStarts: 1 });
-    to = endOfWeek(baseDate, { weekStarts: 1 });
+    from = startOfWeek(baseDate, { weekStartsOn: 1 });
+    to = endOfWeek(baseDate, { weekStartsOn: 1 });
     groupBy = "day";
   } else if (rangeType === "yearly") {
     from = startOfYear(baseDate);

@@ -45,7 +45,7 @@ export function InsightBarChart({ data }: Props) {
           <Tooltip 
             cursor={{ fill: 'rgba(0,0,0,0.05)' }}
             contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-            formatter={(value: number) => [formatCurrency(value), undefined]}
+            formatter={(value) => [typeof value === "number" ? formatCurrency(value) : value, undefined]}
             labelStyle={{ color: '#0f172a', fontWeight: 'bold', marginBottom: '4px' }}
           />
           <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} iconType="circle" />

@@ -39,7 +39,7 @@ export function InsightDonutChart({ data }: Props) {
               ))}
             </Pie>
             <Tooltip 
-              formatter={(value: number) => [formatCurrency(value), undefined]}
+              formatter={(value) => [typeof value === "number" ? formatCurrency(value) : value, undefined]}
               contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
             />
           </PieChart>

@@ -3,7 +3,7 @@ import { getCategories } from "@/actions/categories";
 import { NewTransactionClient } from "./_client";
 
 export const metadata = {
-  title: "Catat Transaksi — FinanceTracker",
+  title: "Catat Transaksi",
 };
 
 export default async function NewTransactionPage() {

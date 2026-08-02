@@ -152,7 +152,7 @@ export function AIInputClient({ wallets, categories }: { wallets: any[]; categor
                         />
                       </div>
                       {/* Category */}
-                      <Select value={tx.categoryId || "uncategorized"} onValueChange={(v) => changeCategory(tx.id, v)}>
+                      <Select value={tx.categoryId || "uncategorized"} onValueChange={(v) => changeCategory(tx.id, v ?? "uncategorized")}>
                         <SelectTrigger className="h-8 text-xs">
                           <SelectValue>
                             {categories.find((c) => c.id === tx.categoryId)?.name || "-- Tanpa Kategori --"}

@@ -41,9 +41,13 @@ export default function LoginPage() {
   return (
     <div className="flex h-screen w-full items-center justify-center px-4 bg-gray-50 dark:bg-gray-900">
       <Card className="w-full max-w-sm">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">FinanceTracker</CardTitle>
-          <CardDescription>Masukkan password untuk masuk</CardDescription>
+        <CardHeader className="text-center space-y-1">
+          <CardTitle className="text-3xl font-extrabold tracking-tight">
+            <span className="bg-gradient-to-r from-emerald-500 to-teal-400 bg-clip-text text-transparent">
+              Expend
+            </span>
+          </CardTitle>
+          <CardDescription className="text-sm">Track every rupiah. Kenali polamu.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">

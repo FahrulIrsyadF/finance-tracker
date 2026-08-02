@@ -54,7 +54,7 @@ export async function deleteWallet(id: string) {
     .where(eq(transactions.walletId, id));
 
   const [{ countAsTransfer }] = await db
-    .select({ count: sql<number>`count(*)` })
+    .select({ countAsTransfer: sql<number>`count(*)` })
     .from(transactions)
     .where(eq(transactions.transferToWalletId, id));
 

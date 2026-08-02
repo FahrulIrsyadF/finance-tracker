@@ -6,8 +6,11 @@ import { Providers } from "@/components/providers";
 const geist = Geist({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "FinanceTracker",
-  description: "Pencatatan keuangan pribadi",
+  title: {
+    default: "Expend",
+    template: "%s | Expend",
+  },
+  description: "Catat setiap rupiah. Kenali polamu.",
 };
 
 export default function RootLayout({
