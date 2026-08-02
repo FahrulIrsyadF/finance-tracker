@@ -70,7 +70,7 @@ Aplikasi pencatatan keuangan pribadi berbasis web (Next.js App Router) dengan de
 - [ ] Review & edit sebelum simpan
 
 ### 🔧 Phase 7 — Polish & Deploy (IN PROGRESS)
-- [x] Rebranding ke "Expend" (nama, logo, metadata, login page)
+- [x] Rebranding ke "Exspend" (nama, logo, metadata, login page)
 - [x] DB Reset script (`npm run db:reset`) — wipe + re-seed kategori default
 - [x] Fix semua TypeScript type errors (pre-existing bugs di wallets, insights, transaction form, charts)
 - [x] Production build verified — 0 errors, 13 pages

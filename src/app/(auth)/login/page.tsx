@@ -44,7 +44,7 @@ export default function LoginPage() {
         <CardHeader className="text-center space-y-1">
           <CardTitle className="text-3xl font-extrabold tracking-tight">
             <span className="bg-gradient-to-r from-emerald-500 to-teal-400 bg-clip-text text-transparent">
-              Expend
+              Exspend
             </span>
           </CardTitle>
           <CardDescription className="text-sm">Track every rupiah. Kenali polamu.</CardDescription>
