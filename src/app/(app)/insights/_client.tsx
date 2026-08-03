@@ -1,24 +1,32 @@
-"use client";
+﻿"use client";
 
 import { InsightBarChart } from "@/components/insights/bar-chart";
 import { InsightDonutChart } from "@/components/insights/donut-chart";
 import type { InsightData } from "@/actions/insights";
 import { Button } from "@/components/ui/button";
 import { formatCurrency, cn } from "@/lib/utils";
-import { ChevronLeft, ChevronRight, Loader2, Settings2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2, Settings2, Wallet } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select, SelectContent, SelectItem,
+  SelectTrigger, SelectValue,
+} from "@/components/ui/select";
+
+type WalletOption = { id: string; name: string; color: string | null };
 
 interface Props {
   initialData: InsightData;
   currentRange: "weekly" | "monthly" | "yearly";
   currentDate: string;
   currentStartDay: number;
+  currentWalletId?: string;
   fromLabel: string;
   toLabel: string;
+  wallets: WalletOption[];
 }
 
 export function InsightsClient({
@@ -26,8 +34,10 @@ export function InsightsClient({
   currentRange,
   currentDate,
   currentStartDay,
+  currentWalletId,
   fromLabel,
   toLabel,
+  wallets,
 }: Props) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -35,18 +45,32 @@ export function InsightsClient({
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [startDayInput, setStartDayInput] = useState(String(currentStartDay));
 
-  const navigate = (newRange: string, dateOffset: number = 0, newStartDay?: number) => {
+  const navigate = (
+    newRange: string,
+    dateOffset: number = 0,
+    newStartDay?: number,
+    newWalletId?: string | null
+  ) => {
     const base = new Date(currentDate);
     if (dateOffset !== 0) {
       if (newRange === "weekly") base.setDate(base.getDate() + dateOffset * 7);
       if (newRange === "monthly") base.setMonth(base.getMonth() + dateOffset);
       if (newRange === "yearly") base.setFullYear(base.getFullYear() + dateOffset);
     }
-    
+
     const d = base.toISOString().split("T")[0];
     const sd = newStartDay !== undefined ? newStartDay : currentStartDay;
+    // walletId: jika null artinya hapus filter; jika undefined artinya pertahankan yang ada
+    const wid = newWalletId === null ? undefined : (newWalletId ?? currentWalletId);
+
+    const params = new URLSearchParams();
+    params.set("range", newRange);
+    params.set("date", d);
+    params.set("startDay", String(sd));
+    if (wid) params.set("walletId", wid);
+
     startTransition(() => {
-      router.push(`/insights?range=${newRange}&date=${d}&startDay=${sd}`);
+      router.push(`/insights?${params.toString()}`);
     });
   };
 
@@ -66,6 +90,8 @@ export function InsightsClient({
   else if (currentRange === "monthly") displayLabel = d.toLocaleDateString("id-ID", { month: "long", year: "numeric" });
   else if (currentRange === "yearly") displayLabel = d.getFullYear().toString();
 
+  const selectedWallet = wallets.find((w) => w.id === currentWalletId);
+
   return (
     <div className="px-4 pt-6 pb-20 max-w-md mx-auto space-y-6">
       {/* Header & Settings */}
@@ -80,6 +106,30 @@ export function InsightsClient({
           )}
         </div>
       </div>
+
+      {/* Wallet Filter */}
+      {wallets.length > 0 && (
+        <div className="flex items-center gap-2">
+          <Wallet className="h-4 w-4 text-muted-foreground shrink-0" />
+          <Select
+            value={currentWalletId ?? "all"}
+            onValueChange={(val) => navigate(currentRange, 0, undefined, val === "all" ? null : val)}
+            disabled={isPending}
+          >
+            <SelectTrigger id="insights-wallet-filter" className="h-9 text-sm">
+              <SelectValue>
+                {selectedWallet ? selectedWallet.name : "Semua Wallet"}
+              </SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Semua Wallet</SelectItem>
+              {wallets.map((w) => (
+                <SelectItem key={w.id} value={w.id}>{w.name}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      )}
 
       {/* Tabs */}
       <div className="flex rounded-xl overflow-hidden border">
@@ -128,7 +178,7 @@ export function InsightsClient({
             <p className="font-bold text-rose-600">{formatCurrency(initialData.totalExpense)}</p>
           </div>
         </div>
-        
+
         <div className="border rounded-xl p-4 bg-card text-center">
           <p className="text-xs text-muted-foreground mb-1">Arus Kas (Cash Flow)</p>
           <p className={cn("font-bold text-lg", initialData.cashFlow >= 0 ? "text-emerald-600" : "text-rose-600")}>
@@ -142,7 +192,7 @@ export function InsightsClient({
           <InsightBarChart data={initialData.chartData} />
         </div>
 
-        {/* Donut Chart with Income/Expense Tabs */}
+        {/* Donut Chart */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <h2 className="font-bold">Kategori</h2>
@@ -175,12 +225,12 @@ export function InsightsClient({
             <div className="space-y-2">
               <Label>Tanggal Mulai (Bulanan)</Label>
               <p className="text-xs text-muted-foreground">
-                Tentukan siklus bulananmu. Misalnya jika gajian setiap tanggal 25, maka laporan akan dihitung dari tgl 25 ke tgl 24 bulan berikutnya.
+                Tentukan siklus bulananmu. Misalnya jika gajian setiap tanggal 25, laporan dihitung dari tgl 25 ke tgl 24 bulan berikutnya.
               </p>
-              <Input 
-                type="number" 
-                min={1} 
-                max={31} 
+              <Input
+                type="number"
+                min={1}
+                max={31}
                 value={startDayInput}
                 onChange={(e) => setStartDayInput(e.target.value)}
               />

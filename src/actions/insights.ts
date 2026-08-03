@@ -31,7 +31,11 @@ export interface InsightData {
   incomeByCategory: CategoryDataPoint[]; // For donut chart
 }
 
-export async function getInsightData(range: DateRange, groupBy: "day" | "month"): Promise<InsightData> {
+export async function getInsightData(
+  range: DateRange,
+  groupBy: "day" | "month",
+  walletId?: string
+): Promise<InsightData> {
   // Fetch transactions in range
   const rawTxs = await db
     .select({
@@ -45,7 +49,8 @@ export async function getInsightData(range: DateRange, groupBy: "day" | "month")
     .from(transactions)
     .where(and(
       gte(transactions.date, range.from),
-      lte(transactions.date, range.to)
+      lte(transactions.date, range.to),
+      ...(walletId ? [eq(transactions.walletId, walletId)] : [])
     ));
 
   // Fetch all categories for mapping

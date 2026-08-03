@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { transactions, wallets } from "@/lib/db/schema";
 import { randomUUID } from "crypto";
 import { revalidatePath } from "next/cache";
-import { eq, desc, and, gte, lte, sql } from "drizzle-orm";
+import { eq, desc, and, gte, lte, sql, like } from "drizzle-orm";
 
 export type TransactionType = "income" | "expense" | "transfer";
 
@@ -40,6 +40,20 @@ export async function getTransactions(filters?: TransactionFilters) {
     .from(transactions)
     .where(conditions.length > 0 ? and(...conditions) : undefined)
     .orderBy(desc(transactions.date));
+}
+
+/**
+ * Mencari transaksi berdasarkan note (full-text search across ALL dates).
+ * Tidak terpengaruh filter waktu — gunakan untuk fitur pencarian.
+ */
+export async function searchTransactions(query: string) {
+  if (!query.trim()) return [];
+  return db
+    .select()
+    .from(transactions)
+    .where(like(transactions.note, `%${query.trim()}%`))
+    .orderBy(desc(transactions.date))
+    .limit(50);
 }
 
 export async function createTransaction(data: TransactionFormData) {

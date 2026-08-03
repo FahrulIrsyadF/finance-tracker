@@ -1,11 +1,14 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition } from "react";
 import { deleteWallet } from "@/actions/wallets";
 import { WalletDialog } from "@/components/wallet/wallet-dialog";
+import { WalletDetailDialog } from "@/components/wallet/wallet-detail-dialog";
+import { TransactionForm } from "@/components/transaction/transaction-form";
+import type { WalletOption, CategoryOption } from "@/components/transaction/transaction-form";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/utils";
-import { Plus, Pencil, Trash2, Wallet } from "lucide-react";
+import { Plus, Pencil, Trash2, Wallet, ArrowLeftRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
   Dialog, DialogContent, DialogHeader,
@@ -24,13 +27,21 @@ type WalletRow = {
   isArchived: boolean;
 };
 
-export function WalletsClient({ initialWallets }: { initialWallets: WalletRow[] }) {
+interface Props {
+  initialWallets: WalletRow[];
+  wallets: WalletOption[];
+  categories: CategoryOption[];
+}
+
+export function WalletsClient({ initialWallets, wallets, categories }: Props) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<WalletRow | null>(null);
   const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
   const [showArchived, setShowArchived] = useState(false);
+  const [detailWallet, setDetailWallet] = useState<WalletRow | null>(null);
+  const [transferDialogOpen, setTransferDialogOpen] = useState(false);
 
   const activeWallets = initialWallets.filter((w) => !w.isArchived);
   const archivedWallets = initialWallets.filter((w) => w.isArchived);
@@ -51,9 +62,15 @@ export function WalletsClient({ initialWallets }: { initialWallets: WalletRow[] 
     setDialogOpen(true);
   };
 
-  const openEdit = (w: WalletRow) => {
+  const openEdit = (e: React.MouseEvent, w: WalletRow) => {
+    e.stopPropagation();
     setEditTarget(w);
     setDialogOpen(true);
+  };
+
+  const openDelete = (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
+    setDeleteTargetId(id);
   };
 
   return (
@@ -63,10 +80,23 @@ export function WalletsClient({ initialWallets }: { initialWallets: WalletRow[] 
           <h1 className="text-xl font-bold">Wallet</h1>
           <p className="text-sm text-muted-foreground">Total: {formatCurrency(totalBalance)}</p>
         </div>
-        <Button size="sm" onClick={openCreate} className="gap-1.5">
-          <Plus className="h-4 w-4" />
-          Tambah
-        </Button>
+        <div className="flex items-center gap-2">
+          {activeWallets.length >= 2 && (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => setTransferDialogOpen(true)}
+              className="gap-1.5"
+            >
+              <ArrowLeftRight className="h-4 w-4" />
+              Transfer
+            </Button>
+          )}
+          <Button size="sm" onClick={openCreate} className="gap-1.5">
+            <Plus className="h-4 w-4" />
+            Tambah
+          </Button>
+        </div>
       </div>
 
       {displayedWallets.length === 0 ? (
@@ -80,7 +110,8 @@ export function WalletsClient({ initialWallets }: { initialWallets: WalletRow[] 
           {displayedWallets.map((wallet) => (
             <div
               key={wallet.id}
-              className="flex items-center justify-between p-4 rounded-2xl border bg-card"
+              onClick={() => setDetailWallet(wallet)}
+              className="flex items-center justify-between p-4 rounded-2xl border bg-card cursor-pointer hover:bg-muted/40 active:bg-muted/60 transition-colors"
             >
               <div className="flex items-center gap-3">
                 <div
@@ -109,7 +140,7 @@ export function WalletsClient({ initialWallets }: { initialWallets: WalletRow[] 
                     size="icon"
                     variant="ghost"
                     className="h-7 w-7"
-                    onClick={() => openEdit(wallet)}
+                    onClick={(e) => openEdit(e, wallet)}
                   >
                     <Pencil className="h-3.5 w-3.5" />
                   </Button>
@@ -117,7 +148,7 @@ export function WalletsClient({ initialWallets }: { initialWallets: WalletRow[] 
                     variant="ghost"
                     size="icon"
                     className="h-8 w-8 text-rose-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/50"
-                    onClick={() => setDeleteTargetId(wallet.id)}
+                    onClick={(e) => openDelete(e, wallet.id)}
                     disabled={wallet.isArchived}
                   >
                     <Trash2 className="h-4 w-4" />
@@ -131,9 +162,9 @@ export function WalletsClient({ initialWallets }: { initialWallets: WalletRow[] 
 
       {archivedWallets.length > 0 && (
         <div className="pt-4 text-center">
-          <Button 
-            variant="ghost" 
-            size="sm" 
+          <Button
+            variant="ghost"
+            size="sm"
             className="text-xs text-muted-foreground"
             onClick={() => setShowArchived(!showArchived)}
           >
@@ -141,6 +172,38 @@ export function WalletsClient({ initialWallets }: { initialWallets: WalletRow[] 
           </Button>
         </div>
       )}
+
+      {/* Wallet Detail Dialog */}
+      <WalletDetailDialog
+        wallet={detailWallet}
+        open={!!detailWallet}
+        onClose={() => setDetailWallet(null)}
+      />
+
+      {/* Transfer Dialog */}
+      <Dialog open={transferDialogOpen} onOpenChange={setTransferDialogOpen}>
+        <DialogContent className="max-w-sm mx-auto">
+          <DialogHeader>
+            <DialogTitle>Transfer Antar Wallet</DialogTitle>
+          </DialogHeader>
+          <TransactionForm
+            wallets={wallets}
+            categories={categories}
+            initialValues={{
+              walletId: activeWallets[0]?.id ?? "",
+              transferToWalletId: activeWallets[1]?.id ?? "",
+              type: "transfer",
+              amount: 0,
+              date: new Date().toISOString().split("T")[0],
+            }}
+            onSuccess={() => {
+              setTransferDialogOpen(false);
+              router.refresh();
+            }}
+            onCancel={() => setTransferDialogOpen(false)}
+          />
+        </DialogContent>
+      </Dialog>
 
       {/* Delete confirmation dialog */}
       <Dialog open={!!deleteTargetId} onOpenChange={(open) => { if (!open) setDeleteTargetId(null); }}>

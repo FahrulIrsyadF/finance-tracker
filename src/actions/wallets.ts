@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { wallets, transactions } from "@/lib/db/schema";
 import { randomUUID } from "crypto";
 import { revalidatePath } from "next/cache";
-import { eq, sql } from "drizzle-orm";
+import { eq, sql, desc, and, gte, lte } from "drizzle-orm";
 
 export type WalletType = "cash" | "bank" | "ewallet" | "credit";
 
@@ -44,6 +44,44 @@ export async function updateWallet(id: string, data: Partial<WalletFormData>) {
   revalidatePath("/dashboard");
   revalidatePath("/transactions");
   revalidatePath("/insights");
+}
+
+/**
+ * Edit saldo awal wallet dan adjust currentBalance secara proporsional.
+ * currentBalance += (newInitial - oldInitial) agar tidak membuang running balance.
+ */
+export async function updateWalletInitialBalance(id: string, newInitialBalance: number) {
+  const [wallet] = await db.select().from(wallets).where(eq(wallets.id, id));
+  if (!wallet) throw new Error("Wallet tidak ditemukan");
+
+  const diff = newInitialBalance - wallet.initialBalance;
+  await db
+    .update(wallets)
+    .set({
+      initialBalance: newInitialBalance,
+      currentBalance: sql`${wallets.currentBalance} + ${diff}`,
+    })
+    .where(eq(wallets.id, id));
+
+  revalidatePath("/wallets");
+  revalidatePath("/dashboard");
+  revalidatePath("/transactions");
+  revalidatePath("/insights");
+}
+
+export async function getWalletTransactions(
+  walletId: string,
+  opts?: { startDate?: Date; endDate?: Date }
+) {
+  const conditions = [eq(transactions.walletId, walletId)];
+  if (opts?.startDate) conditions.push(gte(transactions.date, opts.startDate));
+  if (opts?.endDate) conditions.push(lte(transactions.date, opts.endDate));
+
+  return db
+    .select()
+    .from(transactions)
+    .where(and(...conditions))
+    .orderBy(desc(transactions.date));
 }
 
 export async function deleteWallet(id: string) {

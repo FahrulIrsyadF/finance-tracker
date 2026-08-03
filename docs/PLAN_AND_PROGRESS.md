@@ -81,3 +81,17 @@ Aplikasi pencatatan keuangan pribadi berbasis web (Next.js App Router) dengan de
 - Balance wallet diupdate otomatis saat createTransaction/deleteTransaction.
 - Default kategori punya flag `isDefault: true` dan tidak bisa dihapus.
 - Proxy.ts menggantikan middleware.ts (deprecated di Next.js 16).
+
+### ✅ Phase 8 — Feature Additions (SELESAI)
+- [x] Wallet detail dialog: klik card wallet buka dialog dengan list transaksi + filter waktu (bulan ini / 7 hari / bulan lalu / semua)
+- [x] Edit saldo awal wallet via dialog detail (recalc currentBalance otomatis)
+- [x] Dashboard wallet list → client component, clickable, buka WalletDetailDialog
+- [x] Filter wallet di halaman Insight (dropdown wallet, update via URL param)
+- [x] Tombol Transfer di halaman Wallet (buka TransactionForm pre-set type=transfer)
+- [x] Halaman Transaksi: server-side filter bulan ini sebagai default (URL params month/year/walletId)
+- [x] Halaman Transaksi: filter wallet dropdown
+- [x] Halaman Transaksi: navigasi bulan (chevron prev/next)
+- [x] Halaman Transaksi: pencarian transaksi (search across all data, tidak terpengaruh filter waktu)
+- [x] Halaman Transaksi: tombol Import merged (AI + PDF) dengan pilihan dialog
+- [x] Halaman Transaksi: Floating Action Button (+) untuk tambah transaksi
+

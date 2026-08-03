@@ -1,11 +1,11 @@
-import { getWallets } from "@/actions/wallets";
+﻿import { getWallets } from "@/actions/wallets";
 import { getTransactions } from "@/actions/transactions";
 import { getCategories } from "@/actions/categories";
 import { formatCurrency } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { TrendingUp, TrendingDown, Wallet } from "lucide-react";
+import { TrendingUp, TrendingDown } from "lucide-react";
+import { DashboardWalletList } from "@/components/wallet/dashboard-wallet-list";
 
-// Get current month date range
 function getMonthRange() {
   const now = new Date();
   const start = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -22,7 +22,7 @@ export default async function DashboardPage() {
   const { start, end } = getMonthRange();
   const monthlyTx = await getTransactions({ startDate: start, endDate: end });
 
-  const activeWallets = walletsData.filter(w => !w.isArchived);
+  const activeWallets = walletsData.filter((w) => !w.isArchived);
   const totalBalance = activeWallets.reduce((sum, w) => sum + w.currentBalance, 0);
   const monthlyIncome = monthlyTx
     .filter((t) => t.type === "income")
@@ -68,32 +68,7 @@ export default async function DashboardPage() {
 
       <div>
         <h2 className="text-sm font-semibold mb-3 text-muted-foreground uppercase tracking-wide">Wallet</h2>
-        <div className="space-y-2">
-          {activeWallets.length === 0 ? (
-            <p className="text-sm text-muted-foreground text-center py-4">Belum ada wallet aktif. Tambah dulu!</p>
-          ) : (
-            activeWallets.map((wallet) => (
-              <div
-                key={wallet.id}
-                className="flex items-center justify-between p-3 rounded-xl border bg-card"
-              >
-                <div className="flex items-center gap-3">
-                  <div
-                    className="h-9 w-9 rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: wallet.color ?? "#6B7280" }}
-                  >
-                    <Wallet className="h-4 w-4 text-white" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">{wallet.name}</p>
-                    <p className="text-xs text-muted-foreground capitalize">{wallet.type}</p>
-                  </div>
-                </div>
-                <p className="text-sm font-semibold">{formatCurrency(wallet.currentBalance)}</p>
-              </div>
-            ))
-          )}
-        </div>
+        <DashboardWalletList wallets={activeWallets} />
       </div>
 
       {recentTx.length > 0 && (
@@ -108,7 +83,7 @@ export default async function DashboardPage() {
                     <p className="text-sm font-medium">{tx.note ?? cat?.name ?? "Transaksi"}</p>
                     <p className="text-xs text-muted-foreground">
                       {new Date(tx.date).toLocaleDateString("id-ID", { day: "numeric", month: "short" })}
-                      {cat && ` · ${cat.name}`}
+                      {cat && ` ${cat.name}`}
                     </p>
                   </div>
                   <p
