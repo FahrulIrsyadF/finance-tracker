@@ -68,6 +68,7 @@ export function TransactionsClient({
   const [searchResults, setSearchResults] = useState<TxRow[] | null>(null);
   const [isSearching, startSearchTransition] = useTransition();
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const walletMap = Object.fromEntries(wallets.map((w) => [w.id, w]));
   const categoryMap = Object.fromEntries(categories.map((c) => [c.id, c]));
@@ -146,7 +147,16 @@ export function TransactionsClient({
             size="icon"
             variant="ghost"
             className="h-8 w-8 text-muted-foreground"
-            onClick={() => setIsSearchVisible(!isSearchVisible)}
+            onClick={() => {
+              const visible = !isSearchVisible;
+              setIsSearchVisible(visible);
+              if (visible) {
+                setTimeout(() => searchInputRef.current?.focus(), 50);
+              } else {
+                setSearchQuery("");
+                setSearchResults(null);
+              }
+            }}
           >
             <Search className="h-4 w-4" />
           </Button>
@@ -188,6 +198,7 @@ export function TransactionsClient({
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
+            ref={searchInputRef}
             placeholder="Cari transaksi..."
             className="pl-9 pr-9"
             value={searchQuery}
@@ -425,7 +436,15 @@ export function TransactionsClient({
           <TransactionForm
             wallets={wallets}
             categories={categories}
-            onSuccess={() => { setAddDialogOpen(false); router.refresh(); }}
+            onSuccess={() => {
+              setAddDialogOpen(false);
+              if (searchQuery.trim()) {
+                startSearchTransition(async () => {
+                  const results = await searchTransactions(searchQuery);
+                  setSearchResults(results as TxRow[]);
+                });
+              }
+            }}
             onCancel={() => setAddDialogOpen(false)}
           />
         </DialogContent>
@@ -450,7 +469,15 @@ export function TransactionsClient({
                 note: editTarget.note ?? undefined,
                 date: new Date(editTarget.date).toISOString().split("T")[0],
               }}
-              onSuccess={() => { setEditTarget(null); router.refresh(); }}
+              onSuccess={() => {
+                setEditTarget(null);
+                if (searchQuery.trim()) {
+                  startSearchTransition(async () => {
+                    const results = await searchTransactions(searchQuery);
+                    setSearchResults(results as TxRow[]);
+                  });
+                }
+              }}
               onCancel={() => setEditTarget(null)}
             />
           )}
