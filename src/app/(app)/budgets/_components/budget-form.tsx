@@ -23,9 +23,9 @@ export function BudgetForm({
   const router = useRouter();
   const [pending, startTransition] = useTransition();
 
-  const [form, setForm] = useState<BudgetFormData>({
+  const [form, setForm] = useState({
     categoryId: initialData?.categoryId ?? (categories.length > 0 ? categories[0].id : ""),
-    amount: initialData?.amount ?? "",
+    amount: initialData?.amount ? String(initialData.amount) : "",
     period: initialData?.period ?? "monthly",
   });
 
