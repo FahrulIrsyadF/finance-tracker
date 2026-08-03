@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select";
 import { formatCurrency, cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { toast } from "@/components/ui/toast";
 
 export type WalletOption = { id: string; name: string; currentBalance: number; color: string | null; isArchived?: boolean };
 export type CategoryOption = { id: string; name: string; type: string; color: string | null };
@@ -91,9 +92,15 @@ export function TransactionForm({
 
     startTransition(async () => {
       if (editId) {
-        await updateTransaction(editId, data);
+        const res = await updateTransaction(editId, data);
+        if (res?.overbudget) {
+          toast.add({ title: "Budget Peringatan", description: res.message, type: "warning" });
+        }
       } else {
-        await createTransaction(data);
+        const res = await createTransaction(data);
+        if (res?.overbudget) {
+          toast.add({ title: "Budget Peringatan", description: res.message, type: "warning" });
+        }
       }
       router.refresh();
       onSuccess?.();

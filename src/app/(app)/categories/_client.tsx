@@ -59,12 +59,15 @@ export function CategoriesClient({ initialCategories }: { initialCategories: Cat
     setDialogOpen(true);
   };
 
-  const handleDelete = (id: string, name: string) => {
-    if (!confirm(`Hapus kategori "${name}"?`)) return;
+  const [deleteTarget, setDeleteTarget] = useState<{id: string, name: string} | null>(null);
+
+  const handleDeleteConfirm = () => {
+    if (!deleteTarget) return;
     setError("");
     startTransition(async () => {
       try {
-        await deleteCategory(id);
+        await deleteCategory(deleteTarget.id);
+        setDeleteTarget(null);
         router.refresh();
       } catch (e: unknown) {
         if (e instanceof Error) setError(e.message);
@@ -145,7 +148,7 @@ export function CategoriesClient({ initialCategories }: { initialCategories: Cat
                     size="icon"
                     variant="ghost"
                     className="h-8 w-8 text-destructive hover:text-destructive"
-                    onClick={() => handleDelete(cat.id, cat.name)}
+                    onClick={() => setDeleteTarget({ id: cat.id, name: cat.name })}
                     disabled={pending}
                   >
                     <Trash2 className="h-3.5 w-3.5" />
@@ -157,7 +160,31 @@ export function CategoriesClient({ initialCategories }: { initialCategories: Cat
         </div>
       )}
 
-      {/* Dialog */}
+      {/* Delete Dialog */}
+      <Dialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
+        <DialogContent className="max-w-xs mx-auto rounded-2xl">
+          <DialogHeader>
+            <DialogTitle>Hapus Kategori?</DialogTitle>
+            <div className="text-sm text-muted-foreground mt-2">
+              Kategori "{deleteTarget?.name}" akan dihapus secara permanen.
+            </div>
+          </DialogHeader>
+          <DialogFooter className="gap-2 sm:gap-0 mt-4">
+            <Button variant="outline" onClick={() => setDeleteTarget(null)} disabled={pending}>
+              Batal
+            </Button>
+            <Button 
+              variant="destructive" 
+              onClick={handleDeleteConfirm} 
+              disabled={pending}
+            >
+              {pending ? "Menghapus..." : "Hapus"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Form Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-sm mx-auto">
           <DialogHeader>

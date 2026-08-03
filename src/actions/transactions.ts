@@ -5,6 +5,7 @@ import { transactions, wallets } from "@/lib/db/schema";
 import { randomUUID } from "crypto";
 import { revalidatePath } from "next/cache";
 import { eq, desc, and, gte, lte, sql, like } from "drizzle-orm";
+import { checkBudgetExceeded } from "./budgets";
 
 export type TransactionType = "income" | "expense" | "transfer";
 
@@ -99,6 +100,16 @@ export async function createTransaction(data: TransactionFormData) {
   revalidatePath("/dashboard");
   revalidatePath("/wallets");
   revalidatePath("/insights");
+  revalidatePath("/budgets"); // Important since budget progress changes
+
+  if (data.type === "expense" && data.categoryId) {
+    const budgetCheck = await checkBudgetExceeded(data.categoryId, data.amount, data.date);
+    if (budgetCheck.exceeded) {
+      return { success: true, overbudget: true, message: budgetCheck.message };
+    }
+  }
+
+  return { success: true };
 }
 
 export async function deleteTransaction(id: string) {
@@ -178,5 +189,15 @@ export async function updateTransaction(id: string, data: TransactionFormData) {
   revalidatePath("/dashboard");
   revalidatePath("/wallets");
   revalidatePath("/insights");
+  revalidatePath("/budgets");
+
+  if (data.type === "expense" && data.categoryId) {
+    const budgetCheck = await checkBudgetExceeded(data.categoryId, data.amount, data.date);
+    if (budgetCheck.exceeded) {
+      return { success: true, overbudget: true, message: budgetCheck.message };
+    }
+  }
+
+  return { success: true };
 }
 

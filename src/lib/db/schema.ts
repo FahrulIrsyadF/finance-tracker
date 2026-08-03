@@ -52,3 +52,26 @@ export const importLogs = sqliteTable("import_logs", {
   createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
   transactionCount: integer("transaction_count").notNull().default(0),
 });
+
+export const budgets = sqliteTable("budgets", {
+  id: text("id").primaryKey(),
+  categoryId: text("category_id").references(() => categories.id).notNull().unique(),
+  amount: real("amount").notNull(),
+  period: text("period").notNull(), // daily, weekly, monthly
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+});
+
+export const recurringTransactions = sqliteTable("recurring_transactions", {
+  id: text("id").primaryKey(),
+  walletId: text("wallet_id").references(() => wallets.id).notNull(),
+  categoryId: text("category_id").references(() => categories.id),
+  type: text("type").notNull(), // income, expense, transfer
+  amount: real("amount").notNull(),
+  note: text("note"),
+  frequency: text("frequency").notNull(), // daily, weekly, monthly
+  startDate: integer("start_date", { mode: "timestamp" }).notNull(),
+  nextProcessedDate: integer("next_processed_date", { mode: "timestamp" }).notNull(),
+  isActive: integer("is_active", { mode: "boolean" }).notNull().default(true),
+  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+  transferToWalletId: text("transfer_to_wallet_id").references(() => wallets.id),
+});

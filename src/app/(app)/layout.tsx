@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { BottomNav } from "@/components/layout/bottom-nav";
 
+import { processRecurringTransactions } from "@/actions/recurring";
+
 export default async function AppLayout({
   children,
 }: {
@@ -10,6 +12,13 @@ export default async function AppLayout({
 }) {
   const session = await getServerSession(authOptions);
   if (!session) redirect("/login");
+
+  // Process recurring transactions
+  try {
+    await processRecurringTransactions();
+  } catch (e) {
+    console.error("Failed to process recurring transactions:", e);
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
