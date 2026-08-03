@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { deleteRecurringTransaction, toggleRecurringTransaction } from "@/actions/recurring";
 import { formatCurrency, cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { Edit2, Trash2 } from "lucide-react";
 import * as LucideIcons from "lucide-react";
@@ -53,7 +54,7 @@ export function RecurringList({ items }: { items: any[] }) {
         const IconComp = item.categoryIcon ? (LucideIcons as any)[item.categoryIcon] : null;
 
         return (
-          <div key={item.id} className={cn("p-4 rounded-xl border bg-card", !item.isActive && "opacity-60")}>
+          <div key={item.id} className={cn("p-4 rounded-xl border bg-card transition-opacity", !item.isActive && "opacity-80")}>
             <div className="flex justify-between items-start mb-3">
               <div className="flex items-center gap-3">
                 <div 
@@ -83,22 +84,22 @@ export function RecurringList({ items }: { items: any[] }) {
               </div>
             </div>
 
-            <div className="bg-secondary/50 rounded-lg p-2.5 flex justify-between items-center text-xs mb-3">
+            <div className={cn("bg-secondary/50 rounded-lg p-2.5 flex justify-between items-center text-xs mb-3 transition-opacity", !item.isActive && "opacity-60")}>
               <span className="text-muted-foreground">Eksekusi Berikutnya:</span>
               <span className="font-medium">{format(new Date(item.nextProcessedDate), "dd MMM yyyy", { locale: localeId })}</span>
             </div>
 
             <div className="flex justify-between items-center pt-1">
-              <button 
-                onClick={() => handleToggle(item.id, item.isActive)}
-                disabled={loading === item.id}
-                className={cn(
-                  "text-xs font-medium px-2 py-1 rounded-md transition-colors",
-                  item.isActive ? "bg-emerald-100 text-emerald-700" : "bg-muted text-muted-foreground"
-                )}
-              >
-                {item.isActive ? "Aktif" : "Nonaktif"}
-              </button>
+              <div className="flex items-center gap-2">
+                <Switch 
+                  checked={item.isActive} 
+                  onCheckedChange={() => handleToggle(item.id, item.isActive)}
+                  disabled={loading === item.id}
+                />
+                <span className={cn("text-xs font-medium", item.isActive ? "text-emerald-600" : "text-muted-foreground")}>
+                  {item.isActive ? "Aktif" : "Nonaktif"}
+                </span>
+              </div>
               
               <div className="flex gap-1">
                 <Button variant="ghost" size="icon" className="h-7 w-7" nativeButton={false} render={<Link href={`/recurring/${item.id}`} />}>

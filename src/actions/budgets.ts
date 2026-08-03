@@ -20,6 +20,7 @@ export async function getBudgets() {
       categoryId: budgets.categoryId,
       amount: budgets.amount,
       period: budgets.period,
+      isActive: budgets.isActive,
       createdAt: budgets.createdAt,
       categoryName: categories.name,
       categoryColor: categories.color,
@@ -106,11 +107,17 @@ export async function deleteBudget(id: string) {
   revalidatePath("/categories");
 }
 
+export async function toggleBudgetStatus(id: string, isActive: boolean) {
+  await db.update(budgets).set({ isActive }).where(eq(budgets.id, id));
+  revalidatePath("/budgets");
+  revalidatePath("/categories");
+}
+
 export async function checkBudgetExceeded(categoryId: string, newAmount: number, date: Date) {
   const budget = await db
     .select()
     .from(budgets)
-    .where(eq(budgets.categoryId, categoryId))
+    .where(and(eq(budgets.categoryId, categoryId), eq(budgets.isActive, true)))
     .limit(1);
 
   if (budget.length === 0) return { exceeded: false };

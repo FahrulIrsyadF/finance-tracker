@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { deleteBudget, getBudgets } from "@/actions/budgets";
+import { deleteBudget, toggleBudgetStatus } from "@/actions/budgets";
+import { Switch } from "@/components/ui/switch";
 import { formatCurrency, cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from "@/components/ui/dialog";
@@ -15,6 +16,7 @@ import * as LucideIcons from "lucide-react";
 export function BudgetList({ budgets, categories }: { budgets: any[], categories: any[] }) {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [loadingId, setLoadingId] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
   const handleDelete = () => {
@@ -24,6 +26,13 @@ export function BudgetList({ budgets, categories }: { budgets: any[], categories
       setDeletingId(null);
       router.refresh();
     });
+  };
+
+  const handleToggle = async (id: string, currentActive: boolean) => {
+    setLoadingId(id);
+    await toggleBudgetStatus(id, !currentActive);
+    setLoadingId(null);
+    router.refresh();
   };
 
   return (
@@ -36,7 +45,7 @@ export function BudgetList({ budgets, categories }: { budgets: any[], categories
         const IconComp = b.categoryIcon ? (LucideIcons as any)[b.categoryIcon] : null;
 
         return (
-          <div key={b.id} className="p-4 rounded-xl border bg-card">
+          <div key={b.id} className={cn("p-4 rounded-xl border bg-card transition-opacity", !b.isActive && "opacity-60")}>
             <div className="flex justify-between items-start mb-2">
               <div className="flex items-center gap-2">
                 <div 
@@ -50,7 +59,13 @@ export function BudgetList({ budgets, categories }: { budgets: any[], categories
                   <p className="text-xs text-muted-foreground mt-1">Limit: {formatCurrency(b.amount)} / {periodLabel}</p>
                 </div>
               </div>
-              <div className="flex gap-1">
+              <div className="flex items-center gap-2">
+                <Switch 
+                  checked={b.isActive} 
+                  onCheckedChange={() => handleToggle(b.id, b.isActive)}
+                  disabled={loadingId === b.id}
+                />
+                <div className="flex gap-1 ml-1">
                 <Button variant="ghost" size="icon" className="h-7 w-7" nativeButton={false} render={<Link href={`/budgets/${b.categoryId}`} />}>
                   <Edit2 className="h-3.5 w-3.5 text-muted-foreground" />
                 </Button>
@@ -65,8 +80,9 @@ export function BudgetList({ budgets, categories }: { budgets: any[], categories
                 </Button>
               </div>
             </div>
+          </div>
 
-            <div className="mt-4">
+          <div className="mt-4">
               <div className="flex justify-between text-xs mb-1.5 font-medium">
                 <span>Terpakai: {formatCurrency(b.spent)}</span>
                 <span className={cn(

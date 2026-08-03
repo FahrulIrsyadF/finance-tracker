@@ -58,6 +58,7 @@ export const budgets = sqliteTable("budgets", {
   categoryId: text("category_id").references(() => categories.id).notNull().unique(),
   amount: real("amount").notNull(),
   period: text("period").notNull(), // daily, weekly, monthly
+  isActive: integer("is_active", { mode: "boolean" }).notNull().default(true),
   createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
 });
 
