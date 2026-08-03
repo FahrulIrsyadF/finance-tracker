@@ -8,6 +8,8 @@ Aplikasi pencatatan keuangan pribadi berbasis web dengan desain mobile-first. Di
 
 - 🔐 **Autentikasi Sederhana** — Password-only login menggunakan NextAuth.js + JWT
 - 💰 **Manajemen Wallet** — Lacak saldo dari berbagai sumber (Cash, Rekening Bank, E-Wallet) dengan fitur soft-delete
+- 🎯 **Batas Anggaran (Budgeting)** — Batasi pengeluaran per kategori (Harian/Mingguan/Bulanan) dengan peringatan otomatis
+- 🔄 **Transaksi Rutin** — Jadwalkan tagihan atau pemasukan berulang secara otomatis tanpa cron job
 - 🏷️ **Kategori Transaksi** — Kategori default bawaan dan kustomisasi sesuai kebutuhan
 - 💸 **Pencatatan Transaksi** — Pemasukan, Pengeluaran, dan Transfer antar wallet
 - 📊 **Insight & Laporan** — Dashboard grafik interaktif (Recharts) dengan filter waktu fleksibel

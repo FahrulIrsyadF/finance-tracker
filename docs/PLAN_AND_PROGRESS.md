@@ -93,5 +93,12 @@ Aplikasi pencatatan keuangan pribadi berbasis web (Next.js App Router) dengan de
 - [x] Halaman Transaksi: navigasi bulan (chevron prev/next)
 - [x] Halaman Transaksi: pencarian transaksi (search across all data, tidak terpengaruh filter waktu)
 - [x] Halaman Transaksi: tombol Import merged (AI + PDF) dengan pilihan dialog
-- [x] Halaman Transaksi: Floating Action Button (+) untuk tambah transaksi
+    - [x] Halaman Transaksi: Floating Action Button (+) untuk tambah transaksi
 
+### ✅ Phase 9 — Budgeting & Recurring Transactions (SELESAI)
+- [x] Fitur Batas Anggaran (Budget) harian, mingguan, bulanan per kategori
+- [x] Peringatan (toast alert) otomatis saat transaksi melebihi batas anggaran
+- [x] Kalkulasi budget dinamis (stateless time-window) kebal terhadap cron fail/timezone bug
+- [x] Fitur Transaksi Rutin (Recurring) harian, mingguan, bulanan
+- [x] Eksekusi otomatis penjadwalan rutin dengan Catch-Up Logic via SSR rendering
+- [x] UI/UX Bottom Navigation: Dropdown "Lainnya" untuk Kategori, Budgeting, & Rutin
