@@ -25,6 +25,7 @@ type TxRow = {
   id: string; walletId: string; categoryId: string | null;
   type: string; amount: number; note: string | null;
   date: Date; source: string;
+  transferToWalletId?: string | null;
 };
 
 interface Props {
@@ -122,12 +123,21 @@ export function TransactionsClient({
     else navigate(currentMonth + 1, currentYear);
   };
 
-  // Determine which transactions to show
+  // Determine which transactions to show and project transfer types based on wallet filter
   const displayTxs = searchResults !== null ? searchResults : initialTransactions;
+  
+  const projectedTxs = displayTxs.map(tx => {
+    let computedType = tx.type;
+    if (tx.type === "transfer" && currentWalletId) {
+      if (tx.walletId === currentWalletId) computedType = "expense";
+      else if (tx.transferToWalletId === currentWalletId) computedType = "income";
+    }
+    return { ...tx, computedType };
+  });
 
   // Group by date
-  const grouped: Record<string, TxRow[]> = {};
-  for (const tx of displayTxs) {
+  const grouped: Record<string, (TxRow & { computedType: string })[]> = {};
+  for (const tx of projectedTxs) {
     const key = new Date(tx.date).toLocaleDateString("id-ID", {
       weekday: "long", day: "numeric", month: "long", year: "numeric",
     });
@@ -259,8 +269,8 @@ export function TransactionsClient({
         ) : (
           <div className="space-y-5">
             {Object.entries(grouped).map(([date, txs]) => {
-              const dayIncome = txs.filter((t) => t.type === "income").reduce((s, t) => s + t.amount, 0);
-              const dayExpense = txs.filter((t) => t.type === "expense").reduce((s, t) => s + t.amount, 0);
+              const dayIncome = txs.filter((t) => t.computedType === "income").reduce((s, t) => s + t.amount, 0);
+              const dayExpense = txs.filter((t) => t.computedType === "expense").reduce((s, t) => s + t.amount, 0);
 
               return (
                 <div key={date}>
@@ -294,9 +304,9 @@ export function TransactionsClient({
                               className="h-9 w-9 rounded-full flex items-center justify-center shrink-0"
                               style={{ backgroundColor: cat?.color ?? "#6B7280" }}
                             >
-                              {tx.type === "income" ? (
+                              {tx.computedType === "income" ? (
                                 <TrendingUp className="h-4 w-4 text-white" />
-                              ) : tx.type === "expense" ? (
+                              ) : tx.computedType === "expense" ? (
                                 <TrendingDown className="h-4 w-4 text-white" />
                               ) : (
                                 <ArrowLeftRight className="h-4 w-4 text-white" />
@@ -304,7 +314,7 @@ export function TransactionsClient({
                             </div>
                             <div className="min-w-0">
                               <p className="text-sm font-medium truncate">
-                                {tx.note ?? cat?.name ?? TYPE_LABELS[tx.type as TransactionType]}
+                                {tx.note ?? cat?.name ?? TYPE_LABELS[tx.computedType as TransactionType] ?? TYPE_LABELS[tx.type as TransactionType]}
                               </p>
                               <p className="text-xs text-muted-foreground truncate">
                                 {wallet?.name ?? "Wallet Dihapus"}
@@ -317,14 +327,14 @@ export function TransactionsClient({
                             <p
                               className={cn(
                                 "text-sm font-semibold",
-                                tx.type === "income"
+                                tx.computedType === "income"
                                   ? "text-emerald-600"
-                                  : tx.type === "expense"
+                                  : tx.computedType === "expense"
                                   ? "text-rose-600"
                                   : "text-muted-foreground"
                               )}
                             >
-                              {tx.type === "income" ? "+" : tx.type === "expense" ? "-" : ""}
+                              {tx.computedType === "income" ? "+" : tx.computedType === "expense" ? "-" : ""}
                               {formatCurrency(tx.amount)}
                             </p>
                             <Button

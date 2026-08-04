@@ -2,7 +2,7 @@
 
 import { db } from "@/lib/db";
 import { transactions, categories, wallets } from "@/lib/db/schema";
-import { and, gte, lte, eq } from "drizzle-orm";
+import { and, gte, lte, eq, or } from "drizzle-orm";
 
 export interface DateRange {
   from: Date;
@@ -45,12 +45,13 @@ export async function getInsightData(
       date: transactions.date,
       categoryId: transactions.categoryId,
       walletId: transactions.walletId,
+      transferToWalletId: transactions.transferToWalletId,
     })
     .from(transactions)
     .where(and(
       gte(transactions.date, range.from),
       lte(transactions.date, range.to),
-      ...(walletId ? [eq(transactions.walletId, walletId)] : [])
+      ...(walletId ? [or(eq(transactions.walletId, walletId), eq(transactions.transferToWalletId, walletId))] : [])
     ));
 
   // Fetch all categories for mapping
@@ -60,12 +61,24 @@ export async function getInsightData(
   let totalIncome = 0;
   let totalExpense = 0;
 
-  const chartMap: Record<string, { income: number; expense: number }> = {};
+  const chartMap: Record<string, { name: string; income: number; expense: number; timestamp: number }> = {};
   const expenseCatMap: Record<string, number> = {};
   const incomeCatMap: Record<string, number> = {};
 
   for (const tx of rawTxs) {
-    if (tx.type === "transfer") continue; // Exclude transfers from cash flow
+    let computedType = tx.type;
+
+    if (tx.type === "transfer") {
+      if (!walletId) continue; // Exclude transfers from global cash flow
+      
+      if (tx.walletId === walletId) {
+        computedType = "expense";
+      } else if (tx.transferToWalletId === walletId) {
+        computedType = "income";
+      } else {
+        continue;
+      }
+    }
 
     const dateObj = new Date(tx.date);
     let key = "";
@@ -76,16 +89,16 @@ export async function getInsightData(
     }
 
     if (!chartMap[key]) {
-      chartMap[key] = { income: 0, expense: 0 };
+      chartMap[key] = { name: key, income: 0, expense: 0, timestamp: dateObj.getTime() };
     }
 
-    if (tx.type === "income") {
+    if (computedType === "income") {
       totalIncome += tx.amount;
       chartMap[key].income += tx.amount;
       if (tx.categoryId) {
         incomeCatMap[tx.categoryId] = (incomeCatMap[tx.categoryId] || 0) + tx.amount;
       }
-    } else if (tx.type === "expense") {
+    } else if (computedType === "expense") {
       totalExpense += tx.amount;
       chartMap[key].expense += tx.amount;
       if (tx.categoryId) {
@@ -95,10 +108,13 @@ export async function getInsightData(
   }
 
   // Format chart data
-  const chartData: ChartDataPoint[] = Object.entries(chartMap).map(([name, data]) => ({
-    name,
-    ...data,
-  }));
+  const chartData: ChartDataPoint[] = Object.values(chartMap)
+    .sort((a, b) => a.timestamp - b.timestamp)
+    .map(({ name, income, expense }) => ({
+      name,
+      income,
+      expense,
+    }));
 
   // Format category data
   const formatCatData = (map: Record<string, number>) => {

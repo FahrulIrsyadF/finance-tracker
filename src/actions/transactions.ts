@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { transactions, wallets } from "@/lib/db/schema";
 import { randomUUID } from "crypto";
 import { revalidatePath } from "next/cache";
-import { eq, desc, and, gte, lte, sql, like } from "drizzle-orm";
+import { eq, desc, and, gte, lte, sql, like, or } from "drizzle-orm";
 import { checkBudgetExceeded } from "./budgets";
 
 export type TransactionType = "income" | "expense" | "transfer";
@@ -30,7 +30,14 @@ export interface TransactionFilters {
 export async function getTransactions(filters?: TransactionFilters) {
   const conditions = [];
 
-  if (filters?.walletId) conditions.push(eq(transactions.walletId, filters.walletId));
+  if (filters?.walletId) {
+    conditions.push(
+      or(
+        eq(transactions.walletId, filters.walletId),
+        eq(transactions.transferToWalletId, filters.walletId)
+      )
+    );
+  }
   if (filters?.categoryId) conditions.push(eq(transactions.categoryId, filters.categoryId));
   if (filters?.type) conditions.push(eq(transactions.type, filters.type));
   if (filters?.startDate) conditions.push(gte(transactions.date, filters.startDate));
