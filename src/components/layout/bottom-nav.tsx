@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -9,7 +10,10 @@ import {
   Menu,
   Tag,
   PieChart,
+  Moon,
+  Sun,
 } from "lucide-react";
+import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -28,6 +32,12 @@ const navItems = [
 
 export function BottomNav() {
   const pathname = usePathname();
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border h-16 safe-area-pb">
@@ -63,6 +73,20 @@ export function BottomNav() {
                   <DropdownMenuItem render={<Link href="/recurring" className="flex items-center w-full cursor-pointer" />}>
                     <ArrowLeftRight className="mr-2 h-4 w-4" />
                     <span>Transaksi Rutin</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="flex items-center w-full cursor-pointer mt-1 border-t pt-2"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setTheme(theme === "dark" ? "light" : "dark");
+                    }}
+                  >
+                    {mounted ? (
+                      theme === "dark" ? <Sun className="mr-2 h-4 w-4" /> : <Moon className="mr-2 h-4 w-4" />
+                    ) : (
+                      <Moon className="mr-2 h-4 w-4 opacity-50" />
+                    )}
+                    <span>{mounted && theme === "dark" ? "Mode Terang" : "Mode Gelap"}</span>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
